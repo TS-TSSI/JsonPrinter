@@ -1,0 +1,11 @@
+package:
+  name: jsonprinter
+  version: "1.0.0"
+
+source:
+  path: ./src
+
+requirements:
+  build:
+    - make
+    - {{ compiler('cxx') }}
