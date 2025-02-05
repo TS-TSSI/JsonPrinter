@@ -7,5 +7,6 @@ source:
 
 requirements:
   build:
+    - cmake
     - make
     - {{ compiler('cxx') }}

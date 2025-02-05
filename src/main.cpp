@@ -55,14 +55,41 @@ static void PrintJson(const Json::Value& jsonObj, const char* name, size_t inden
 	printf(", \n");
 }
 
-int main(int c, const char** args)
+#ifdef BUILD_LIBRARY
+
+#ifdef __GNUC__
+#define EXPORT_FUNC extern "C" __attribute__((visibility("default")))
+#else
+#error "Unsupported platform for this sample"
+#endif
+
+EXPORT_FUNC void TestJsonPrinter()
 {
-	printf("Testing Conda package!\n");
+	printf("Json printing library test function called\n");
 
 	Json::Value jsonRoot = {};
 	Json::Reader reader = {};
 
-	printf("Parsing JSON\n");
+	printf("Parsing JSON. . .\n");
+	if(!reader.parse(jsonData, jsonRoot))
+		return;
+
+	printf("Printing JSON data:\n");
+	PrintJson(jsonRoot, "RootObject");
+
+	printf("Finished!\n");
+}
+
+#else // #ifdef BUILD_LIBRARY
+
+int main(int c, const char** args)
+{
+	printf("Starting Json printing utility\n");
+
+	Json::Value jsonRoot = {};
+	Json::Reader reader = {};
+
+	printf("Parsing JSON. . .\n");
 	if(!reader.parse(jsonData, jsonRoot))
 		throw std::runtime_error("Error parsing json :-(");
 
@@ -73,3 +100,5 @@ int main(int c, const char** args)
 
 	return 0;
 }
+
+#endif // BUILD_LIBRARY
